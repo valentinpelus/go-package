@@ -58,7 +58,6 @@ func getVMAlertBackendSize(server string, clientset *kubernetes.Clientset) strin
 	}
 
 	// Init var alertFiring with false by default
-	alertFiring := false
 
 	// Parsing Json return to match Alertname with haproxyBackendSizeDivergence
 	for _, alerts := range response.Data {
@@ -67,12 +66,10 @@ func getVMAlertBackendSize(server string, clientset *kubernetes.Clientset) strin
 			podName := alerts.Labels.Pod
 			//Proceeding to the deletion of pod if alert is firing
 			//deletePodDivergence(podName, clientset)
-			alertFiring = true
 			return podName
 			break
 		} else {
 			log.Info().Msgf("No pod in state of backendsize divergence")
-			alertFiring = false
 			return ""
 		}
 	}
