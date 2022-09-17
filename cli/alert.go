@@ -35,7 +35,7 @@ var (
 	Client HTTPClient
 )
 
-func getVMAlertBackendSize(server string, clientset *kubernetes.Clientset) string {
+func GetVMAlertBackendSize(server string, clientset *kubernetes.Clientset) (string, string) {
 	// Initialisation of GET request
 	res, err := http.Get(server)
 	if err != nil {
@@ -64,14 +64,14 @@ func getVMAlertBackendSize(server string, clientset *kubernetes.Clientset) strin
 		if (alerts.Labels.Alertname == "haproxyBackendSizeDivergence") && (len(alerts.Labels.Pod) > 0) {
 			log.Info().Msgf("Alert %s is firing on pod %s deletion ongoing", alerts.Labels.Alertname, alerts.Labels.Pod)
 			podName := alerts.Labels.Pod
+			namespace := alerts.Labels.Namespace
 			//Proceeding to the deletion of pod if alert is firing
-			//deletePodDivergence(podName, clientset)
-			return podName
-			break
+			//DeletePod(podName, clientset, namespace)
+			return podName, namespace
 		} else {
 			log.Info().Msgf("No pod in state of backendsize divergence")
-			return ""
+			continue
 		}
 	}
-	return ""
+	return "", ""
 }
