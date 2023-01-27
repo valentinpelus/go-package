@@ -54,16 +54,18 @@ func GetVMAlertBackendSize(server string) (string, string) {
 	if err := json.Unmarshal(body, &response); err != nil {
 		log.Fatal().Msgf("Error in reading body %s ", err)
 	}
+	log.Info().Msgf("Alert : %s", response.Data)
 
 	// Parsing Json return to match Alertname with haproxyBackendSizeDivergence
 	for _, alerts := range response.Data {
-		if (alerts.Labels.Alertname == "haproxyBackendSizeDivergence") && (len(alerts.Labels.Pod) > 0) {
+		if (alerts.Labels.Alertname == "podCrashLooping") && (len(alerts.Labels.Pod) > 0) {
 			log.Info().Msgf("Alert %s is firing on pod %s deletion ongoing", alerts.Labels.Alertname, alerts.Labels.Pod)
 			podName := alerts.Labels.Pod
 			namespace := alerts.Labels.Namespace
 			//Proceeding to the deletion of pod if alert is firing
 			return podName, namespace
 		} else {
+			log.Info().Msgf("Alert : %s", alerts.Labels.Alertname)
 			log.Info().Msgf("No pod in state of backendsize divergence")
 			continue
 		}
