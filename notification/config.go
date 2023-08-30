@@ -1,31 +1,31 @@
 package notification
 
 import (
+	"io/ioutil"
 	"os"
 
 	"github.com/rs/zerolog/log"
-	"gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v3"
 )
 
-type Config struct {
-	SlackClient []SlackClient `yaml:"slackClient"`
+type ConfigSlackYaml struct {
+	ClusterName string `yaml:"clusterName"`
+	SlackClient struct {
+		WebhookUrl string `yaml:"webhookUrl"`
+		UserName   string `yaml:"userName"`
+		Channel    string `yaml:"channel"`
+	} `yaml:"slackClient"`
 }
 
-type SlackClient struct {
-	webhookUrl string `yaml:"webhookUrl"`
-	userName   string `yaml:"userName"`
-	channel    string `yaml:"channel"`
-}
-
-var Conf Config
+var ConfigurationSlack ConfigSlackYaml
 
 func LoadConfSlack(confPath string) {
-	yamlFile, err := os.ReadFile(confPath)
+	yamlFile, err := ioutil.ReadFile(confPath)
 	if err != nil {
 		log.Fatal().Err(err).Msg("Can't read notification config file")
 		os.Exit(1)
 	}
-	err = yaml.Unmarshal(yamlFile, &Conf)
+	err = yaml.Unmarshal(yamlFile, &ConfigurationSlack)
 	if err != nil {
 		log.Fatal().Err(err).Msg("Unmarshal error")
 		os.Exit(1)

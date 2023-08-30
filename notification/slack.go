@@ -24,6 +24,7 @@ type SimpleSlackRequest struct {
 }
 
 type SlackJobNotification struct {
+	Title     string
 	Color     string
 	IconEmoji string
 	Details   string
@@ -93,10 +94,6 @@ func (sc SlackClient) SendError(message string, options ...string) (err error) {
 
 func (sc SlackClient) SendInfo(message string, options ...string) (err error) {
 	return sc.funcName("good", message, options)
-}
-
-func (sc SlackClient) SendInfo(message string, options ...string) (err error) {
-	return sc.funcName("information", message, options)
 }
 
 func (sc SlackClient) SendWarning(message string, options ...string) (err error) {
