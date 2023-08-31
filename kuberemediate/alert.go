@@ -33,7 +33,7 @@ var (
 	Client HTTPClient
 )
 
-func GetVMAlertBackendSize(server string) (string, string) {
+func GetVMAlertBackendSize(server string) (string, string, string) {
 	// Initialisation of GET request
 	res, err := http.Get(server)
 	if err != nil {
@@ -61,13 +61,14 @@ func GetVMAlertBackendSize(server string) (string, string) {
 			log.Info().Msgf("Alert %s is firing on pod %s deletion ongoing", alerts.Labels.Alertname, alerts.Labels.Pod)
 			podName := alerts.Labels.Pod
 			namespace := alerts.Labels.Namespace
+			alertName := alerts.Labels.Alertname
 			log.Info().Msgf("alert.go Podname : %s Namespace : %s", podName, namespace)
 			//Proceeding to the deletion of pod if alert is firing
-			return podName, namespace
+			return podName, namespace, alertName
 		} else {
 			log.Info().Msgf("No pod in state of backendsize divergence")
 			continue
 		}
 	}
-	return "", ""
+	return "", "", ""
 }
