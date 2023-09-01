@@ -10,10 +10,10 @@ import (
 
 type ConfigSlackYaml struct {
 	ClusterName string `yaml:"clusterName"`
+	WebhookUrl  string `yaml:"webhookUrl"`
 	SlackClient struct {
-		WebhookUrl string `yaml:"webhookUrl"`
-		UserName   string `yaml:"userName"`
-		Channel    string `yaml:"channel"`
+		UserName string `yaml:"userName"`
+		Channel  string `yaml:"channel"`
 	} `yaml:"slackClient"`
 }
 
