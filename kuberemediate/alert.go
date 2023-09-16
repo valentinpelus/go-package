@@ -32,6 +32,11 @@ type Data struct {
 var (
 	Client HTTPClient
 )
+var alertsList []string
+
+func parseAlertsList([]string) {
+
+}
 
 func GetVMAlertBackendSize(server string) (string, string, string) {
 	// Initialisation of GET request
