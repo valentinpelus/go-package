@@ -11,6 +11,7 @@ type AlertList struct {
 	Alertlist []struct {
 		Alertname string `yaml:"alertname"`
 		Enabled   bool   `yaml:"enabled"`
+		Action    string `yaml:action`
 	} `yaml:"alertlist"`
 }
 
